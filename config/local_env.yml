@@ -1,0 +1,6 @@
+DB_HOST: 'ec2-54-75-230-123.eu-west-1.compute.amazonaws.com'
+DB_USERNAME: 'usifvwnvovugzc'
+DB_DATABASE: 'dalvqu51o1iuf6'
+DB_PASSWORD: 'kVc0XlYwe6bB-bvJI_JUImjCJD'
+SECRET_KEY_BASE: '03d0a64ac1ab1078ef7fcc0372ff5045eae3de1b2823fba2bb5db9401c0ab4b4f8f6415b7a95da48217a585034cb521e1333aba8131b06d50b31d17f9ec96cff'
+test: 'D16tL9tgBz2mKgcHullQB3kquwoRFtY4N0tLx1ksqRpZBSvZGEFgclrY6SrM'
