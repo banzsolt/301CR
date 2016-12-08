@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   root 'access#index'
 
+
+
   resources :games
   resources :game_sessions
   resource :users
