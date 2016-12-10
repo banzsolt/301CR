@@ -10,31 +10,55 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161205191611) do
+ActiveRecord::Schema.define(version: 20161210163150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "game_sessions", force: :cascade do |t|
+  create_table "awards", force: :cascade do |t|
+    t.integer  "game_id"
     t.string   "name"
-    t.integer  "players"
-    t.integer  "next_player_id"
-    t.boolean  "finished"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.string   "image"
+    t.boolean  "weekly"
+    t.integer  "min_rank"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "game_sessions", force: :cascade do |t|
+    t.integer  "game_id"
+    t.integer  "player_id"
+    t.boolean  "won"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "games", force: :cascade do |t|
     t.string   "name"
-    t.integer  "max_players"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string   "username"
+  create_table "player_awards", force: :cascade do |t|
+    t.integer  "player_id"
+    t.integer  "award_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "player_histories", force: :cascade do |t|
+    t.integer  "game_id"
+    t.integer  "player_id"
+    t.integer  "rank"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "players", force: :cascade do |t|
+    t.integer  "game_id"
     t.string   "email"
     t.string   "password_digest"
+    t.string   "demographic"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end

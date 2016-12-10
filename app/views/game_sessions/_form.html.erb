@@ -12,23 +12,18 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+    <%= f.label :game_id %>
+    <%= f.number_field :game_id %>
   </div>
 
   <div class="field">
-    <%= f.label :players %>
-    <%= f.number_field :players %>
+    <%= f.label :player_id %>
+    <%= f.number_field :player_id %>
   </div>
 
   <div class="field">
-    <%= f.label :next_player_id %>
-    <%= f.number_field :next_player_id %>
-  </div>
-
-  <div class="field">
-    <%= f.label :finished %>
-    <%= f.check_box :finished %>
+    <%= f.label :won %>
+    <%= f.check_box :won %>
   </div>
 
   <div class="actions">

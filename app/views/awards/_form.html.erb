@@ -1,0 +1,42 @@
+<%= form_for(award) do |f| %>
+  <% if award.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(award.errors.count, "error") %> prohibited this award from being saved:</h2>
+
+      <ul>
+      <% award.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :game_id %>
+    <%= f.number_field :game_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :image %>
+    <%= f.text_field :image %>
+  </div>
+
+  <div class="field">
+    <%= f.label :weekly %>
+    <%= f.check_box :weekly %>
+  </div>
+
+  <div class="field">
+    <%= f.label :min_rank %>
+    <%= f.number_field :min_rank %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

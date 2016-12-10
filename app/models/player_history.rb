@@ -1,0 +1,2 @@
+class PlayerHistory < ApplicationRecord
+end

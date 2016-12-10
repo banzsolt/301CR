@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  resources :player_awards
+  resources :awards
+  resources :player_histories
+  resources :game_sessions
+  resources :players
+  resources :games
   root 'access#index'
 
 

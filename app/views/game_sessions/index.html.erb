@@ -5,10 +5,9 @@
 <table>
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Players</th>
-      <th>Next player</th>
-      <th>Finished</th>
+      <th>Game</th>
+      <th>Player</th>
+      <th>Won</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -16,10 +15,9 @@
   <tbody>
     <% @game_sessions.each do |game_session| %>
       <tr>
-        <td><%= game_session.name %></td>
-        <td><%= game_session.players %></td>
-        <td><%= game_session.next_player_id %></td>
-        <td><%= game_session.finished %></td>
+        <td><%= game_session.game_id %></td>
+        <td><%= game_session.player_id %></td>
+        <td><%= game_session.won %></td>
         <td><%= link_to 'Show', game_session %></td>
         <td><%= link_to 'Edit', edit_game_session_path(game_session) %></td>
         <td><%= link_to 'Destroy', game_session, method: :delete, data: { confirm: 'Are you sure?' } %></td>

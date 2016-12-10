@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Game:</strong>
+  <%= @award.game_id %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @award.name %>
+</p>
+
+<p>
+  <strong>Image:</strong>
+  <%= @award.image %>
+</p>
+
+<p>
+  <strong>Weekly:</strong>
+  <%= @award.weekly %>
+</p>
+
+<p>
+  <strong>Min rank:</strong>
+  <%= @award.min_rank %>
+</p>
+
+<%= link_to 'Edit', edit_award_path(@award) %> |
+<%= link_to 'Back', awards_path %>
