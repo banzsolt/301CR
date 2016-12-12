@@ -69,6 +69,6 @@ class GameSessionPlayersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def game_session_player_params
-      params.require(:game_session_player).permit(:game_session_id, :player_id)
+      params.require(:game_session_player).permit(:game_session_id, :player_id, :won)
     end
 end

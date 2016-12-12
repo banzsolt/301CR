@@ -10,5 +10,10 @@
   <%= @game_session_player.player_id %>
 </p>
 
+<p>
+  <strong>Won:</strong>
+  <%= @game_session_player.won %>
+</p>
+
 <%= link_to 'Edit', edit_game_session_player_path(@game_session_player) %> |
 <%= link_to 'Back', game_session_players_path %>
