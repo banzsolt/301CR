@@ -1,9 +1,8 @@
 
-<div style="width:100%; position: relative; float:left; margin-bottom: 30px;">
-  <h1 style="margin: 0 auto; width: 170px;">High Score</h1>
-</div>
+<h1 style="position: relative; float: left; text-align: center; width: 100%; margin: 20px 0;"><%= @game.name%> - High Score</h1>
 
-<br/>
+
+
 
 
 <table style="width:100%">
@@ -14,32 +13,15 @@
     <th>Lose</th>
     <th>W/L</th>
   </tr>
-  <tr>
-    <td align="center">1</td>
-    <td align="center">banzsolt</td>
-    <td align="center">10</td>
-    <td align="center">1</td>
-    <td align="center">10</td>
-  </tr>
-  <tr>
-    <td align="center">2</td>
-    <td align="center">test</td>
-    <td align="center">3</td>
-    <td align="center">3</td>
-    <td align="center">1</td>
-  </tr>
-  <tr>
-    <td align="center">3</td>
-    <td align="center">test2</td>
-    <td align="center">2</td>
-    <td align="center">6</td>
-    <td align="center">0.33</td>
-  </tr>
-  <tr>
-    <td align="center">4</td>
-    <td align="center">test3</td>
-    <td align="center">5</td>
-    <td align="center">10</td>
-    <td align="center">0.5</td>
-  </tr>
+
+  <% index = 1 %>
+  <% @players.each do |player| %>
+    <tr>
+      <td align="center"><%= index %></td>
+      <td align="center"><%= player.email %></td>
+      <td align="center"><%= player.win_count %></td>
+      <td align="center"><%= player.loss_count %></td>
+      <td align="center"><%= player.win_per_loss %></td>
+    </tr>
+  <% end %>
 </table>
