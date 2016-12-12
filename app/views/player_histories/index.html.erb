@@ -15,7 +15,6 @@
   <tbody>
     <% @player_histories.each do |player_history| %>
       <tr>
-        <td><%= player_history.game_id %></td>
         <td><%= player_history.player_id %></td>
         <td><%= player_history.rank %></td>
         <td><%= link_to 'Show', player_history %></td>

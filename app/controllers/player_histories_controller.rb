@@ -69,6 +69,6 @@ class PlayerHistoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def player_history_params
-      params.require(:player_history).permit(:game_id, :player_id, :rank)
+      params.require(:player_history).permit(:player_id, :rank)
     end
 end
