@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161212203833) do
+ActiveRecord::Schema.define(version: 20161212205109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,9 @@ ActiveRecord::Schema.define(version: 20161212203833) do
     t.datetime "updated_at",                     null: false
     t.boolean  "public",          default: true
     t.string   "nickname"
+    t.integer  "win",             default: 0
+    t.integer  "loss",            default: 0
+    t.float    "win_loss",        default: 0.0
   end
 
 end
