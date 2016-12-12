@@ -1,14 +1,9 @@
-
 <h1 style="position: relative; float: left; text-align: center; width: 100%; margin: 20px 0;"><%= @game.name%> - High Score</h1>
-
-
-
-
 
 <table style="width:100%">
   <tr>
     <th>Position</th>
-    <th>Username</th>
+    <th>Nickname</th>
     <th>Win</th>
     <th>Lose</th>
     <th>W/L</th>
@@ -18,7 +13,7 @@
   <% @players.each do |player| %>
     <tr>
       <td align="center"><%= index %></td>
-      <td align="center"><%= player.email %></td>
+      <td align="center"><a href="/access/player_info/<%= player.id %>"><%= player.nickname %></a></td>
       <td align="center"><%= player.win_count %></td>
       <td align="center"><%= player.loss_count %></td>
       <td align="center"><%= player.win_per_loss %></td>

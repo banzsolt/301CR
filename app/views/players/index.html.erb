@@ -8,6 +8,7 @@
       <th>Game</th>
       <th>Email</th>
       <th>Demographic</th>
+      <th>Nickname</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -18,6 +19,7 @@
         <td><%= player.game_id %></td>
         <td><%= player.email %></td>
         <td><%= player.demographic %></td>
+        <td><%= player.nickname %></td>
         <td><%= link_to 'Show', player %></td>
         <td><%= link_to 'Edit', edit_player_path(player) %></td>
         <td><%= link_to 'Destroy', player, method: :delete, data: { confirm: 'Are you sure?' } %></td>

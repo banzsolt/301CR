@@ -18,4 +18,15 @@ class AccessController < ApplicationController
 
   end
 
+  def player_info
+
+    player_id = 1
+    if !params[:id].nil?
+      player_id = params[:id]
+    end
+
+    @player = Player.find(player_id)
+
+  end
+
 end
