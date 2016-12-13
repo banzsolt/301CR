@@ -1,10 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'api/index'
-
-  get 'api/playerWon'
-
-  get 'api/playerLost'
+  root 'access#index'
 
   resources :game_session_players
   resources :player_awards
@@ -13,13 +9,6 @@ Rails.application.routes.draw do
   resources :game_sessions
   resources :players
   resources :games
-  root 'access#index'
-
-
-
-  resources :games
-  resources :game_sessions
-  resource :users
 
   match ':controller(/:action(/:id))', :via => [:get, :post]
 

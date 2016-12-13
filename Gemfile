@@ -27,8 +27,11 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
-#Gon for passing ruby variables to JS
+# Gon for passing ruby variables to JS
 gem 'gon'
+
+# API versioning helper
+gem 'versionist'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

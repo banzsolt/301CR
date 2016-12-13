@@ -119,7 +119,7 @@ class ApiController < ApplicationController
       if demographic != ''
         players = @game.players.where('demographic = ?', demographic).order(win_loss: :desc).top(limit)
       else
-        players = @game.players.order(win_loss: :desc).top(limit)
+        players = @game.players.order(win_loss: :desc).first(limit)
       end
 
       render :json => players, :except => [:password_digest, :created_at, :updated_at]
