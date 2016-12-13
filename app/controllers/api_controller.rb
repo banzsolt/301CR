@@ -104,7 +104,13 @@ class ApiController < ApplicationController
 
   def high_score
 
-      check_game_id
+      response = check_game_id
+      if response[:error]
+        render :json => response[:response]
+      end
+
+      puts "THE CHECK IS"
+      puts response
 
       limit = 100
       demographic = ''
@@ -152,16 +158,16 @@ class ApiController < ApplicationController
     def check_game_id
 
       if params[:game_id].nil?
-        render :json => {'error': 'game_id missing from parameters'}
-        return false
+        return {:error => true,:render => "game_id missing from parameters"}
       end
 
       @game = Game.find(params[:game_id])
 
       if @game.nil?
-        render :json => {'error': 'game with specified id does not exist'}
-        return false
+        return {'error':true,'render':{'error':'game with specified id does not exist'}}
       end
+
+      return {'error':false}
 
     end
 
