@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  get 'api/index'
+
+  get 'api/playerWon'
+
+  get 'api/playerLost'
+
   resources :game_session_players
   resources :player_awards
   resources :awards
