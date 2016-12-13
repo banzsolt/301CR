@@ -5,6 +5,39 @@
 
 
 <div id="rep-header">
-  <h2 class="hide-graph">Rep Graph</h2>
+  <h2 class="hide-graph">Rank Graph</h2>
   <div id="history-graph" class="hidable-graph"></div>
+</div>
+
+
+<div id="awards-header">
+  <h2 class="hide-graph">Awards</h2>
+  <div class="hidable-graph">
+
+
+
+    <% @player.player_awards.uniq.each do |player_award| %>
+
+      <div style="position: relative; float: left; width: 25%; border-style: solid; max-height: 160px;">
+
+        <div style="position: relative; float: left; width: 50%">
+          <img src="<%= player_award.award.image %>" style="max-width: 100%">
+        </div>
+
+        <div style="position: relative; display:block; float: left; width: 50%; height: 160px;">
+          <div style="position: absolute; top: 50%; height: 50%; margin-top: -25%; text-align: center;">
+            <h3 style="position: relative; float: left; width: 100%; text-align: center;">
+              <%= player_award.award.name %>
+            </h3>
+            <div style="position: relative; float: left; width: 100%; text-align: center">
+              <%= player_award.created_at.strftime("%d/%-m/%Y") %>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
 </div>

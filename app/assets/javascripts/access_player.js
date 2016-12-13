@@ -21,12 +21,11 @@ $(function () {
         element: 'history-graph',
         data: gon.history_data,
         yLabelFormat: function(y) { return 1/y; },
+        xLabelFormat: function (x) { return "{0}-{1}-{2}".format(x.getFullYear(), x.getMonth()+1, x.getDate())},
         xkey: 'created_at',
-        //xLabelFormat: function (x) { return "{0}-{1}-{2}".format(x.getFullYear(), x.getMonth()+1, x.getDate())},
         ykeys: ['rank'],
-        //ymin: gon.rep_graph_data[0].rep,
-        //ymax: gon.rep_graph_data[gon.rep_graph_data.length - 1].rep,
         labels: ['Rank'],
+        ymin: 0.00001,
         hoverCallback: function (index, options, content, row) {
             return hoverFormater(content,new Date(gon.history_data[index].created_at));
         }

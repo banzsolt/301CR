@@ -7,6 +7,7 @@ class Player < ApplicationRecord
   has_many :game_session_players, :dependent => :delete_all
 
   has_many :game_sessions, through: :game_session_players
+  has_many :awards, through: :player_awards
 
   belongs_to :game
 
