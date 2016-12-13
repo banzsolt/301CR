@@ -1,6 +1,6 @@
 class ApiController < ApplicationController
 
-  before_action :authorised, :except => [:index, :register, :player_info]
+  before_action :authorised, :except => [:index, :register, :player_info, :high_score]
 
   def index
   end
