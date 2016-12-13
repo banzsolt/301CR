@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  api_version(:module => "V1", :header => {:name => "Accept", :value => "application/vnd.mycompany.com; version=1"}, :parameter => {:name => "version", :value => "1"}, :path => {:value => "v1"}) do
+    resources :api, :except => [:show]
+  end
   root 'access#index'
 
   resources :game_session_players
