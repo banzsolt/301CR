@@ -5,7 +5,7 @@ class ApiController < ApplicationController
   def index
   end
 
-  def playerWon
+  def player_won
 
     check_game_session
 
@@ -27,7 +27,7 @@ class ApiController < ApplicationController
 
   end
 
-  def playerLost
+  def player_lost
 
     check_game_session
 
@@ -68,9 +68,14 @@ class ApiController < ApplicationController
       return false
     end
 
-    player = Player.where('email = ?', request.headers['email']).first
+    if params[:game_id].nil?
+      render :json => {'error': 'game_id missing from parameters'}
+      return false
+    end
+
+    player = Player.where('email = ? AND game_id = ?', request.headers['email'], params[:game_id]).first
     if !player.nil?
-      render :json => {'error': 'User with this email already registered'}
+      render :json => {'error': 'User already signed up to this game with this'}
       return false
     end
 
@@ -93,7 +98,7 @@ class ApiController < ApplicationController
 
     @player = Player.find(player_id)
 
-    render :json => @player, :except => :password_digest
+    render :json => {'player':@player, 'awards':@player.awards.uniq, 'player_history':@player.player_history}, :except => [:password_digest, :created_at, :updated_at]
 
   end
 
@@ -108,7 +113,7 @@ class ApiController < ApplicationController
     def check_game_session
 
       if params[:game_session_id].nil?
-        render :json => {'error':'game_sessio_id missing from the parameters'}
+        render :json => {'error':'game_session_id missing from the parameters'}
         return false
       end
 
