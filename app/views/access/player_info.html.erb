@@ -1,1 +1,10 @@
+<%= include_gon %>
+<%= javascript_include_tag('access_player.js')%>
+
 <h1 style="position: relative; float: left; text-align: center; width: 100%; margin: 20px 0;"><%= @player.nickname %> - High Score</h1>
+
+
+<div id="rep-header">
+  <h2 class="hide-graph">Rep Graph</h2>
+  <div id="history-graph" class="hidable-graph"></div>
+</div>

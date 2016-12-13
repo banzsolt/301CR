@@ -8,13 +8,7 @@ class AccessController < ApplicationController
     end
 
     @game = Game.find(game_id)
-    @players = @game.players.where('public = ?', true)
-
-    @players.each do |player|
-      player.count_score
-    end
-
-    @players = @players.sort_by{|data| data.win_per_loss}
+    @players = @game.players.where('public = ?', true).order(:win_loss)
 
   end
 
@@ -26,6 +20,8 @@ class AccessController < ApplicationController
     end
 
     @player = Player.find(player_id)
+
+    gon.history_data = @player.player_histories.order(:created_at)
 
   end
 

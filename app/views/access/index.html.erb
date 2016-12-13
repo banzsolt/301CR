@@ -14,9 +14,10 @@
     <tr>
       <td align="center"><%= index %></td>
       <td align="center"><a href="/access/player_info/<%= player.id %>"><%= player.nickname %></a></td>
-      <td align="center"><%= player.win_count %></td>
-      <td align="center"><%= player.loss_count %></td>
-      <td align="center"><%= player.win_per_loss %></td>
+      <td align="center"><%= player.win %></td>
+      <td align="center"><%= player.loss %></td>
+      <td align="center"><%= player.win_loss %></td>
     </tr>
+    <% index += 1 %>
   <% end %>
 </table>
