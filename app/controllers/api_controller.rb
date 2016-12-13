@@ -20,7 +20,7 @@ class ApiController < ApplicationController
     if @player.save
       @game_session.finished = true
       @game_session.save
-      render :json => @player, :except => :password_digest
+      render :json => @player, :except => [:password_digest, :created_at, :updated_at]
     else
       render :json => {'error':'there was an error while trying to save the player'}
     end
@@ -42,7 +42,7 @@ class ApiController < ApplicationController
     if @player.save
       @game_session.finished = true
       @game_session.save
-      render :json => @player, :except => :password_digest
+      render :json => @player, :except => [:password_digest, :created_at, :updated_at]
     else
       render :json => {'error':'there was an error while trying to save the player'}
     end
@@ -51,11 +51,11 @@ class ApiController < ApplicationController
 
   def create_game_session
 
-    game_session = GameSession.new
+    check_game_id
 
-    if params[:game_id].nil?
-      render :json => {'error': 'game_id missing from parameters'}
-    end
+    game_session = GameSession.new
+    game_session.game_id = params[:game_id]
+    game_session.save
 
     render :json => game_session
 
@@ -68,10 +68,7 @@ class ApiController < ApplicationController
       return false
     end
 
-    if params[:game_id].nil?
-      render :json => {'error': 'game_id missing from parameters'}
-      return false
-    end
+    check_game_id
 
     player = Player.where('email = ? AND game_id = ?', request.headers['email'], params[:game_id]).first
     if !player.nil?
@@ -83,9 +80,12 @@ class ApiController < ApplicationController
     player.email = request.headers['email']
     player.password = request.headers['password']
     player.demographic = 'UK'
+    player.game_id = params[:game_id]
     if !params[:demographic].nil?
       player.demographic = params[:demographic]
     end
+
+    render :json => player, :except => [:password_digest, :created_at, :updated_at]
 
   end
 
@@ -104,7 +104,25 @@ class ApiController < ApplicationController
 
   def high_score
 
+      check_game_id
 
+      limit = 100
+      demographic = ''
+      if !params[:limit].nil?
+        limit = params[:limit]
+      end
+
+      if !params[:demographic].nil?
+        demographic = params[:demographic]
+      end
+
+      if demographic != ''
+        players = @game.players.where('demographic = ?', demographic).order(win_loss: :desc).top(limit)
+      else
+        players = @game.players.order(win_loss: :desc).top(limit)
+      end
+
+      render :json => players, :except => [:password_digest, :created_at, :updated_at]
 
   end
 
@@ -126,6 +144,22 @@ class ApiController < ApplicationController
 
       if @game_session.finished
         render :json => {'error': 'game session already finished'}
+        return false
+      end
+
+    end
+
+    def check_game_id
+
+      if params[:game_id].nil?
+        render :json => {'error': 'game_id missing from parameters'}
+        return false
+      end
+
+      @game = Game.find(params[:game_id])
+
+      if @game.nil?
+        render :json => {'error': 'game with specified id does not exist'}
         return false
       end
 
