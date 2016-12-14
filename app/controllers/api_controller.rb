@@ -27,7 +27,9 @@ class ApiController < ApplicationController
 
   def join_game_session
 
-    check_game_session
+    if !check_game_session
+      return
+    end
 
     game_session_player = GameSessionPlayer.new
     game_session_player.game_session_id = @game_session.id
@@ -66,7 +68,7 @@ class ApiController < ApplicationController
       loser_player = game_session_winner.player
 
       loser_player.loss += 1
-      loser_player.win_loss = @player.win / @player.loss
+      loser_player.win_loss = loser_player.win / loser_player.loss
       loser_player.save
 
 
@@ -79,9 +81,11 @@ class ApiController < ApplicationController
 
   def player_lost
 
-    check_game_session
+    if !check_game_session
+      return
+    end
 
-    @player.loss += 1;
+    @player.loss += 1
     @player.win_loss = @player.win / @player.loss
 
     if @player.save
@@ -96,9 +100,9 @@ class ApiController < ApplicationController
 
       winner_player.win += 1;
       if winner_player.loss == 0
-        winner_player.win_loss = @player.win
+        winner_player.win_loss = winner_player.win
       else
-        winner_player.win_loss = @player.win / @player.loss
+        winner_player.win_loss = winner_player.win / winner_player.loss
       end
       winner_player.save
 
