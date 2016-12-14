@@ -14,7 +14,7 @@ class ApiController < ApplicationController
     player = Player.where('email = ? AND game_id = ?', request.headers['email'], params[:game_id]).first
 
     if player.authenticate(request.headers['password'])
-      render :json => {'response': 'Successfully logged in'}
+      render :json => player, :except => [:password_digest, :created_at, :updated_at]
       return
     else
       render :json => {'error': 'Password incorrect'}
