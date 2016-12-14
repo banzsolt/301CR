@@ -25,9 +25,23 @@ class ApiController < ApplicationController
   def index
   end
 
+  def join_game_session
+
+    check_game_session(@player.id)
+
+    game_session_player = GameSessionPlayer.new
+    game_session_player.game_session_id = @game_session.id
+    game_session_player.player_id = @player.id
+    game_session_player.save
+
+    render :json => game_session_player
+
+  end
+
+
   def player_won
 
-    check_game_session
+    check_game_session(@player.id)
 
     @player.win += 1;
 
@@ -49,7 +63,7 @@ class ApiController < ApplicationController
 
   def player_lost
 
-    check_game_session
+    check_game_session(@player.id)
 
     @player.loss += 1;
 
@@ -76,6 +90,11 @@ class ApiController < ApplicationController
     game_session = GameSession.new
     game_session.game_id = params[:game_id]
     game_session.save
+
+    game_session_player = GameSessionPlayer.new
+    game_session_player.game_session_id = game_session.id
+    game_session_player.player_id = @player.id
+    game_session_player.save
 
     render :json => game_session
 
@@ -157,14 +176,14 @@ class ApiController < ApplicationController
 
   private
 
-    def check_game_session
+    def check_game_session(player_id)
 
       if params[:game_session_id].nil?
         render :json => {'error':'game_session_id missing from the parameters'}
         return false
       end
 
-      @game_session = GameSession.find(params[:game_session_id])
+      @game_session = GameSession.where('id = ? AND player_id = ?',params[:game_session_id],player_id)
 
       if @game_session.nil?
         render :json => {'error':'no game sessions with this ID'}
