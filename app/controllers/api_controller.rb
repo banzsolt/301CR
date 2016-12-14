@@ -1,6 +1,26 @@
 class ApiController < ApplicationController
 
-  before_action :authorised, :except => [:index, :register, :player_info, :high_score]
+  before_action :authorised, :except => [:index, :register, :player_info, :high_score, :login]
+
+  def login
+
+    check_game_id
+
+    if request.headers['email'].nil? || request.headers['password'].nil?
+      render :json => {'error': 'The header is missing either email or password'}
+      return false
+    end
+
+    player = Player.where('email = ? AND game_id = ?', request.headers['email'], params[:game_id]).first
+
+    if player.authenticate(request.headers['password'])
+      render :json => {'response': 'Successfully logged in'}
+      return
+    else
+      render :json => {'error': 'Password incorrect'}
+    end
+
+  end
 
   def index
   end
