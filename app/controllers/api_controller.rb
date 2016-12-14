@@ -101,6 +101,7 @@ class ApiController < ApplicationController
     player.password = request.headers['password']
     player.demographic = 'UK'
     player.game_id = params[:game_id]
+    player.nickname = params[:nickname]
     if !params[:demographic].nil?
       player.demographic = params[:demographic]
     end
