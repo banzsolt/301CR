@@ -85,6 +85,8 @@ class ApiController < ApplicationController
       player.demographic = params[:demographic]
     end
 
+    player.save
+
     render :json => player, :except => [:password_digest, :created_at, :updated_at]
 
   end
