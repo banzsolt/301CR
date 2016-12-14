@@ -27,7 +27,7 @@ class ApiController < ApplicationController
 
   def join_game_session
 
-    check_game_session(@player.id)
+    check_game_session
 
     game_session_player = GameSessionPlayer.new
     game_session_player.game_session_id = @game_session.id
@@ -41,7 +41,9 @@ class ApiController < ApplicationController
 
   def player_won
 
-    check_game_session(@player.id)
+    if !check_game_session
+      return
+    end
 
     @player.win += 1;
 
@@ -52,11 +54,15 @@ class ApiController < ApplicationController
     end
 
     if @player.save
+
+      puts "GAME SESSION IS"
+      puts @game_session
+
       @game_session.finished = true
       @game_session.save
 
       # set the other players score to win
-      game_session_winner = GameSessionPlayer.where('game_session_id = ? AND player_id != ?', @game_session.id, player_id).first
+      game_session_winner = GameSessionPlayer.where('game_session_id = ? AND player_id != ?', @game_session.id, @player.id).first
       loser_player = game_session_winner.player
 
       loser_player.loss += 1
@@ -73,7 +79,7 @@ class ApiController < ApplicationController
 
   def player_lost
 
-    check_game_session(@player.id)
+    check_game_session
 
     @player.loss += 1;
     @player.win_loss = @player.win / @player.loss
@@ -83,7 +89,7 @@ class ApiController < ApplicationController
       @game_session.save
 
       # set the other players score to win
-      game_session_winner = GameSessionPlayer.where('game_session_id = ? AND player_id != ?', @game_session.id, player_id).first
+      game_session_winner = GameSessionPlayer.where('game_session_id = ? AND player_id != ?', @game_session.id, @player.id).first
       winner_player = game_session_winner.player
       game_session_winner.won = true
       game_session_winner.save
@@ -196,14 +202,17 @@ class ApiController < ApplicationController
 
   private
 
-    def check_game_session(player_id)
+    def check_game_session
 
       if params[:game_session_id].nil?
         render :json => {'error':'game_session_id missing from the parameters'}
         return false
       end
 
-      @game_session = GameSession.where('id = ? AND player_id = ?',params[:game_session_id],player_id)
+      @game_session = GameSession.find(params[:game_session_id])
+
+      puts "GAME SESSION ISSSSSSSSS"
+      puts @game_session
 
       if @game_session.nil?
         render :json => {'error':'no game sessions with this ID'}
@@ -214,6 +223,8 @@ class ApiController < ApplicationController
         render :json => {'error': 'game session already finished'}
         return false
       end
+
+      return true
 
     end
 
