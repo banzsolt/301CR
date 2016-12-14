@@ -54,6 +54,16 @@ class ApiController < ApplicationController
     if @player.save
       @game_session.finished = true
       @game_session.save
+
+      # set the other players score to win
+      game_session_winner = GameSessionPlayer.where('game_session_id = ? AND player_id != ?', @game_session.id, player_id).first
+      loser_player = game_session_winner.player
+
+      loser_player.loss += 1
+      loser_player.win_loss = @player.win / @player.loss
+      loser_player.save
+
+
       render :json => @player, :except => [:password_digest, :created_at, :updated_at]
     else
       render :json => {'error':'there was an error while trying to save the player'}
@@ -66,16 +76,26 @@ class ApiController < ApplicationController
     check_game_session(@player.id)
 
     @player.loss += 1;
-
-    if @player.loss == 0
-      @player.win_loss = @player.win
-    else
-      @player.win_loss = @player.win / @player.loss
-    end
+    @player.win_loss = @player.win / @player.loss
 
     if @player.save
       @game_session.finished = true
       @game_session.save
+
+      # set the other players score to win
+      game_session_winner = GameSessionPlayer.where('game_session_id = ? AND player_id != ?', @game_session.id, player_id).first
+      winner_player = game_session_winner.player
+      game_session_winner.won = true
+      game_session_winner.save
+
+      winner_player.win += 1;
+      if winner_player.loss == 0
+        winner_player.win_loss = @player.win
+      else
+        winner_player.win_loss = @player.win / @player.loss
+      end
+      winner_player.save
+
       render :json => @player, :except => [:password_digest, :created_at, :updated_at]
     else
       render :json => {'error':'there was an error while trying to save the player'}
