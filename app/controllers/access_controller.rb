@@ -8,7 +8,7 @@ class AccessController < ApplicationController
     end
 
     @game = Game.find(game_id)
-    @players = @game.players.where('public = ?', true).order(win_loss: :desc)
+    @players = @game.players.where('public = ?', true).order(win_loss: :desc).order(:loss)
 
   end
 

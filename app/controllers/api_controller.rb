@@ -4,6 +4,8 @@ class ApiController < ApplicationController
 
   def login
 
+    render :json => @player, :except => [:password_digest, :created_at, :updated_at]
+
   end
 
   def index
