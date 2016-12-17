@@ -5,23 +5,40 @@ class ApplicationController < ActionController::Base
 
   def authorised
 
-    if request.headers['email'].nil? || request.headers['password'].nil?
-      render :json => {'error': 'The header is missing either email or password'}
-      return false
+    authenticate_or_request_with_http_basic do |username, password|
+      player = Player.where('email = ?', username).first
+      if player.nil?
+        render :json => {'error': 'User not found'}
+        return false
+      end
+
+      if player.authenticate(password)
+        @player = player
+        return true
+      else
+        render :json => {'error': 'Password incorrect'}
+        return false
+      end
+
     end
 
-    player = Player.where('email = ?', request.headers['email']).first
-    if player.nil?
-      render :json => {'error': 'Could not find user with email specified'}
-      return false
-    end
+    #if request.headers['email'].nil? || request.headers['password'].nil?
+      #render :json => {'error': 'The header is missing either email or password'}
+      #return false
+    #end
 
-    if player.authenticate(request.headers['password'])
-      @player = player
-      return true
-    else
-      render :json => {'error': 'Password incorrect'}
-    end
+    #player = Player.where('email = ?', request.headers['email']).first
+    #if player.nil?
+      #render :json => {'error': 'Could not find user with email specified'}
+      #return false
+    #end
+
+    #if player.authenticate(request.headers['password'])
+      #@player = player
+      #return true
+    #else
+      #render :json => {'error': 'Password incorrect'}
+    #end
 
 
   end

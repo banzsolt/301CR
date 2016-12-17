@@ -118,7 +118,7 @@ class ApiController < ApplicationController
     check_game_id
 
     game_session = GameSession.new
-    game_session.game_id = params[:game_id]
+    game_session.game_id = @player.game_id
     game_session.save
 
     game_session_player = GameSessionPlayer.new
