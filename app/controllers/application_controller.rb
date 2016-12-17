@@ -5,8 +5,12 @@ class ApplicationController < ActionController::Base
 
   def authorised
 
+    if !check_game_id
+      return false
+    end
+
     authenticate_or_request_with_http_basic do |username, password|
-      player = Player.where('email = ?', username).first
+      player = Player.where('email = ? AND game_id = ?', username, @game.id).first
       if player.nil?
         render :json => {'error': 'User not found'}
         return false
@@ -19,27 +23,28 @@ class ApplicationController < ActionController::Base
         render :json => {'error': 'Password incorrect'}
         return false
       end
-
     end
 
-    #if request.headers['email'].nil? || request.headers['password'].nil?
-      #render :json => {'error': 'The header is missing either email or password'}
-      #return false
-    #end
+  end
 
-    #player = Player.where('email = ?', request.headers['email']).first
-    #if player.nil?
-      #render :json => {'error': 'Could not find user with email specified'}
-      #return false
-    #end
+  def check_game_id
 
-    #if player.authenticate(request.headers['password'])
-      #@player = player
-      #return true
-    #else
-      #render :json => {'error': 'Password incorrect'}
-    #end
+    if request.headers['game-id'].nil?
+      render :json => {'error':'game-id missing from header params'}
+      puts "THIIIIIIIIIIIIS"
+      return false
+    end
 
+    puts "THIAAAAAAS"
+    @game = Game.find(request.headers['game-id'])
+
+
+    if @game.nil?
+      render :json => {'error':'game with specified id does not exist'}
+      return false
+    end
+
+    return true
 
   end
 

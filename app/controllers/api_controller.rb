@@ -4,22 +4,6 @@ class ApiController < ApplicationController
 
   def login
 
-    check_game_id
-
-    if request.headers['email'].nil? || request.headers['password'].nil?
-      render :json => {'error': 'The header is missing either email or password'}
-      return false
-    end
-
-    player = Player.where('email = ? AND game_id = ?', request.headers['email'], params[:game_id]).first
-
-    if player.authenticate(request.headers['password'])
-      render :json => player, :except => [:password_digest, :created_at, :updated_at]
-      return
-    else
-      render :json => {'error': 'Password incorrect'}
-    end
-
   end
 
   def index
@@ -115,8 +99,6 @@ class ApiController < ApplicationController
 
   def create_game_session
 
-    check_game_id
-
     game_session = GameSession.new
     game_session.game_id = @player.game_id
     game_session.save
@@ -132,34 +114,34 @@ class ApiController < ApplicationController
 
   def register
 
-    if request.headers['email'].nil? || request.headers['password'].nil?
-      render :json => {'error': 'The header is missing either email or password'}
-      return false
+    if !check_game_id
+      return
     end
 
-    check_game_id
+    authenticate_or_request_with_http_basic do |username, password|
+      player = Player.where('email = ? AND game_id = ?', request.headers['email'], @game.id).first
+      if !player.nil?
+        render :json => {'error': 'User already signed up to this game with this'}
+        return false
+      end
 
-    player = Player.where('email = ? AND game_id = ?', request.headers['email'], params[:game_id]).first
-    if !player.nil?
-      render :json => {'error': 'User already signed up to this game with this'}
-      return false
+      player = Player.new
+      player.email = username
+      player.password = password
+      player.demographic = 'UK'
+      player.game_id = @game.id
+      player.nickname = params[:nickname]
+      if !params[:demographic].nil?
+        player.demographic = params[:demographic]
+      end
+
+      player.save
+
+      render :json => player, :except => [:password_digest, :created_at, :updated_at]
     end
-
-    player = Player.new
-    player.email = request.headers['email']
-    player.password = request.headers['password']
-    player.demographic = 'UK'
-    player.game_id = params[:game_id]
-    player.nickname = params[:nickname]
-    if !params[:demographic].nil?
-      player.demographic = params[:demographic]
-    end
-
-    player.save
-
-    render :json => player, :except => [:password_digest, :created_at, :updated_at]
 
   end
+
 
   def player_info
 
@@ -176,13 +158,9 @@ class ApiController < ApplicationController
 
   def high_score
 
-      response = check_game_id
-      if response[:error]
-        render :json => response[:response]
+      if !check_game_id
+        return
       end
-
-      puts "THE CHECK IS"
-      puts response
 
       limit = 100
       demographic = ''
@@ -232,20 +210,5 @@ class ApiController < ApplicationController
 
     end
 
-    def check_game_id
-
-      if params[:game_id].nil?
-        return {:error => true,:render => "game_id missing from parameters"}
-      end
-
-      @game = Game.find(params[:game_id])
-
-      if @game.nil?
-        return {'error':true,'render':{'error':'game with specified id does not exist'}}
-      end
-
-      return {'error':false}
-
-    end
 
 end
