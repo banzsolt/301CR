@@ -36,4 +36,22 @@ class Player < ApplicationRecord
 
   end
 
+  def self.track(daysNo)
+
+    index = 1
+    Player.order(win_loss: :desc).all.each do |player|
+      playerHistory = PlayerHistory.new
+      playerHistory.rank = index
+      playerHistory.player_id = player.id
+      playerHistory.save
+      playerHistory.created_at -= daysNo.days
+      playerHistory.updated_at -= daysNo.days
+      playerHistory.save
+
+      puts "#{index} = #{player.nickname}"
+      index += 1
+    end
+
+  end
+
 end

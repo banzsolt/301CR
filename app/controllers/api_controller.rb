@@ -151,7 +151,7 @@ class ApiController < ApplicationController
 
     @player = Player.find(player_id)
 
-    render :json => {'player':@player, 'awards':@player.awards.uniq, 'player_history':@player.player_history}, :except => [:password_digest, :created_at, :updated_at]
+    render :json => {'player':@player, 'awards':@player.awards.uniq, 'player_history':@player.player_histories}, :except => [:password_digest, :created_at, :updated_at]
 
   end
 
