@@ -43,9 +43,6 @@ class ApiController < ApplicationController
 
     if @player.save
 
-      puts "GAME SESSION IS"
-      puts @game_session
-
       @game_session.finished = true
       @game_session.save
 
@@ -174,10 +171,17 @@ class ApiController < ApplicationController
         demographic = params[:demographic]
       end
 
-      if demographic != ''
-        players = @game.players.where('demographic = ?', demographic).order(win_loss: :desc).top(limit)
+      if !params[:type].nil?
+
+
+
+
       else
-        players = @game.players.order(win_loss: :desc).first(limit)
+        if demographic != ''
+          players = @game.players.where('demographic = ?', demographic).order(win_loss: :desc).top(limit)
+        else
+          players = @game.players.order(win_loss: :desc).first(limit)
+        end
       end
 
       render :json => players, :except => [:password_digest, :created_at, :updated_at]
