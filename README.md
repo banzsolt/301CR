@@ -1,3 +1,5 @@
+# Hi Mark is 22/07/2017 19:18
+
 # Installation
 
 To run the server simply download the repository and and run `rails s`. Make sure you create a the `config\local_env.yml` file that contains the connection string for the database. This is not included in the repo for security purposes.
